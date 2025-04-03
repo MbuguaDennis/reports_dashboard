@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login Dashboard</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <!-- FONT AWESOME CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7pQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- jsPDF Library for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<!-- PAGE HEADER -->
+<header class="dashboard-header">
+    <h1>Mamal Computer Lab Dashboard</h1>
+    <p>Monitor student logins, time usage, and generate reports efficiently.</p>
+</header>
+<section class="main">
+    <div class="container">
+        <h1>📊 Student Login Dashboard</h1>
+        <!-- Filters -->
+        <div id="filters">
+            <input type="text" id="student-id" placeholder="🔍 Student ID">
+            <input type="date" id="start-date" min="2000-01-01">
+            <input type="date" id="end-date" min="2000-01-01">
+            <input type="number" id="min-time" placeholder="⏳ Min Time (Minutes)">
+            <button id="apply-filters">Filter 🔍</button>
+            <button id="export-data">Download PDF ⬇️</button>
+        </div>
+
+        <!-- Data Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Date</th>
+                        <th>Time Spent (Minutes)</th>
+                    </tr>
+                </thead>
+                <tbody id="student-data">
+                    <!-- Data will be inserted dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Load More Button -->
+        <button id="load-more">Load More ⏬</button>
+    </div>
+</section>
+<input type="text" name="data-download" id="data-download">
+
+<!-- Back to Top Button -->
+<button id="back-to-top">↑ Top</button>
+
+<!-- Scroll to Bottom Button -->
+<button id="scroll-to-bottom">
+    bottom
+    <i class="fa-solid fa-arrow-down"></i>
+</button>
+
+<!-- JavaScript -->
+<script src="../static/js/script.js"></script>
+</body>
+</html>

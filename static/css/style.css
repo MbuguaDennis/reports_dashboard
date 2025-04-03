@@ -1,0 +1,194 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(120deg, #007BFF, #00D4FF), url('/assets/background_image.jpg') no-repeat center center/cover;
+    margin: 0;
+    padding: 0;
+   text-align: center;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Dashboard Header Styling */
+.dashboard-header {
+    background: rgba(0, 123, 255, 0.9); /* Semi-transparent blue */
+    color: white;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 600;
+}
+
+.dashboard-header p {
+    font-size: 16px;
+    margin-top: 5px;
+    font-weight: 300;
+}
+
+
+
+/* Dashboard Container */
+.container {
+    background: white;
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-top: 20px;
+ 
+}
+.main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* BACK TO TOP FEATURE BUTTON */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    display: none;  /* initially hidden */
+    transition: 0.3s;
+}
+
+#back-to-top:hover {
+    background: #0056b3;
+}
+/* Scroll to Bottom Button */
+#scroll-to-bottom {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: orange;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* Hover effect for the button */
+#scroll-to-bottom:hover {
+    background: #e68a00; /* Darker orange for hover */
+}
+
+
+/* Sticky Filters (Always Visible) */
+#filters {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+/* Filter Inputs & Button */
+#filters input,
+#filters button {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 180px;
+}
+
+#filters button {
+    background: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#filters button:hover {
+    background: #0056b3;
+}
+
+/* Table Styling */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+table th,
+table td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background: #007BFF;
+    color: white;
+}
+
+/* Load More Button */
+#load-more {
+    background: #28a745;
+    color: white;
+    padding: 10px;
+    margin-top: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+#load-more:hover {
+    background: #218838;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #filters {
+        flex-direction: column;
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+    }
+
+    #filters input,
+    #filters button {
+        width: 100%;
+    }
+}
+
+
+/* scroll to down button */
+
