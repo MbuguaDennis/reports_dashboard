@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let originalData = [];
-    let displayedData = [];
-    let currentIndex = 0;
+    // 
+    let originalData = []; // original data is empty array
+    let displayedData = []; // displayed data starts as empty array
+    let currentIndex = 0; //track current index starts as 0
     const pageSize = 10; // Number of rows to show per load
-    const tableBody = document.getElementById("student-data");
+    const tableBody = document.getElementById("student-data"); // intialize table body
     function fetchData() {
         fetch('/api/data')
             .then(response => response.json())
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentIndex = pageSize;
                 renderTable(displayedData);
                 toggleLoadMoreButton();
+                // items per page is
             })
             .catch(error => console.error("Error fetching data:", error));
     }
@@ -34,7 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let startDate = document.getElementById("start-date").value;
         let endDate = document.getElementById("end-date").value;
         let minTime = document.getElementById("min-time").value;
-
         let filteredData = originalData.filter(item => {
             let match = true;
 
@@ -75,20 +76,20 @@ document.addEventListener("DOMContentLoaded", () => {
             loadMoreBtn.style.display = "block";
         }
     }
-    function exportCSV() {
-        let csvContent = "Student ID,Date,Time Spent\n";
-        displayedData.forEach(item => {
-            csvContent += `${item.student_id},${item.date},${item.time_spent.toFixed(2)}\n`;
-        });
-        let blob = new Blob([csvContent], { type: "text/csv" });
-        let url = URL.createObjectURL(blob);
-        let a = document.createElement("a");
-        a.href = url;
-        a.download = "filtered_report.csv";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    }
+    // function exportCSV() {
+    //     let csvContent = "Student ID,Date,Time Spent\n";
+    //     displayedData.forEach(item => {
+    //         csvContent += `${item.student_id},${item.date},${item.time_spent.toFixed(2)}\n`;
+    //     });
+    //     let blob = new Blob([csvContent], { type: "text/csv" });
+    //     let url = URL.createObjectURL(blob);
+    //     let a = document.createElement("a");
+    //     a.href = url;
+    //     a.download = "filtered_report.csv";
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    // }
 
     function downloadFilteredPDF() {
         let studentId = document.getElementById("student-id").value.trim();

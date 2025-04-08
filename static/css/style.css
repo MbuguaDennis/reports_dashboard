@@ -1,16 +1,15 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
-
 body {
     font-family: 'Inter', sans-serif;
     background: linear-gradient(120deg, #007BFF, #00D4FF), url('/assets/background_image.jpg') no-repeat center center/cover;
     margin: 0;
     padding: 0;
-   text-align: center;
+    text-align: center;
     height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;
 }
-
 /* Dashboard Header Styling */
 .dashboard-header {
     background: rgba(0, 123, 255, 0.9); /* Semi-transparent blue */
@@ -22,21 +21,16 @@ body {
     margin-bottom: 15px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 .dashboard-header h1 {
     font-size: 24px;
     margin: 0;
     font-weight: 600;
 }
-
 .dashboard-header p {
     font-size: 16px;
     margin-top: 5px;
     font-weight: 300;
 }
-
-
-
 /* Dashboard Container */
 .container {
     background: white;
@@ -47,7 +41,6 @@ body {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     margin-top: 20px;
- 
 }
 .main{
     display: flex;
@@ -71,7 +64,6 @@ body {
     display: none;  /* initially hidden */
     transition: 0.3s;
 }
-
 #back-to-top:hover {
     background: #0056b3;
 }
@@ -89,13 +81,10 @@ body {
     font-size: 16px;
     transition: 0.3s;
 }
-
 /* Hover effect for the button */
 #scroll-to-bottom:hover {
     background: #e68a00; /* Darker orange for hover */
 }
-
-
 /* Sticky Filters (Always Visible) */
 #filters {
     position: sticky;
@@ -155,7 +144,6 @@ table th {
     background: #007BFF;
     color: white;
 }
-
 /* Load More Button */
 #load-more {
     background: #28a745;
@@ -171,24 +159,20 @@ table th {
 #load-more:hover {
     background: #218838;
 }
-
 /* Responsive Design */
 @media (max-width: 768px) {
     #filters {
         flex-direction: column;
+        justify-content: center;
     }
-
     table th,
     table td {
         padding: 8px;
     }
-
     #filters input,
     #filters button {
         width: 100%;
     }
 }
-
-
 /* scroll to down button */
 

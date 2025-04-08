@@ -1,143 +1,132 @@
-document.addEventListener("DOMContentLoaded", () => {
-    let originalData = [];
-    let filteredData = [];
-    let displayedData = [];
-    let displayedCount = 10; // Number of students displayed initially
-    const pageSize = 10; // Load in batches of 10
-    const tableBody = document.getElementById("student-data");
-    const loadMoreBtn = document.getElementById("load-more");
+let allData = [];
+let visibleCount = 20;
+async function fetchData() {
+    const response = await fetch("/api/data");
+    const data = await response.json();
+    allData = data;
+    renderTable();
+}
+function renderTable() {
+    const tbody = document.getElementById("student-data");
+    tbody.innerHTML = "";
 
-    // Function to fetch data
-    function fetchData() {
-        fetch('/api/data')
-            .then(response => response.json())
-            .then(data => {
-                originalData = data;
-                filteredData = [...originalData]; // Copy of original data
-                updateTable();
-            })
-            .catch(error => console.error("Error fetching data:", error));
-    }
+    const filtered = applyFilters();
+    const visibleData = filtered.slice(0, visibleCount);
 
-    // Format date to be more user-friendly
-    function formatDate(dateString) {
-        let date = new Date(dateString);
-        return date.toLocaleDateString("en-GB"); // DD/MM/YYYY format
-    }
-
-    // Update the table with new data
-    function updateTable() {
-        tableBody.innerHTML = ""; // Clear table before re-rendering
-        displayedData = filteredData.slice(0, displayedCount); // Show only up to displayedCount students
-        renderTable(displayedData);
-        toggleLoadMoreButton();
-    }
-
-    // Render the data inside the table
-    function renderTable(data) {
-        data.forEach(item => {
-            let row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${item.student_id}</td>
-                <td>${formatDate(item.date)}</td>
-                <td>${item.time_spent.toFixed(2)}</td>
-            `;
-            tableBody.appendChild(row);
-        });
-    }
-
-    // Apply filters to the data
-    function applyFilters() {
-        let studentId = document.getElementById("student-id").value.trim();
-        let startDate = document.getElementById("start-date").value;
-        let endDate = document.getElementById("end-date").value;
-        let minTime = document.getElementById("min-time").value;
-
-        filteredData = originalData.filter(item => {
-            let match = true;
-            if (studentId && item.student_id !== studentId) match = false;
-            if (startDate && new Date(item.date) < new Date(startDate)) match = false;
-            if (endDate && new Date(item.date) > new Date(endDate)) match = false;
-            if (minTime && item.time_spent < parseFloat(minTime)) match = false;
-            return match;
-        });
-
-        displayedCount = 10; // Reset displayed count after filtering
-        updateTable();
-    }
-
-    // Load 10 more students when clicking "Load More"
-    function loadMoreData() {
-        displayedCount += pageSize; // Increase displayed students by 10
-        updateTable();
-    }
-
-    // Toggle the visibility of the "Load More" button
-    function toggleLoadMoreButton() {
-        loadMoreBtn.style.display = displayedCount >= filteredData.length ? "none" : "block";
-    }
-
-    // Export data to a PDF
-    function exportPDF() {
-        if (!window.jspdf) {
-            console.error("jsPDF is not loaded.");
-            return;
-        }
-
-        const { jsPDF } = window.jspdf;
-        let doc = new jsPDF();
-
-        doc.setFontSize(18);
-        doc.text("Student Login Report", 14, 15);
-
-        doc.setFontSize(12);
-        let startY = 25;
-        doc.text("Student ID", 14, startY);
-        doc.text("Date", 64, startY);
-        doc.text("Time Spent (Minutes)", 114, startY);
-
-        let y = startY + 10;
-
-        // If filters are applied, export displayedData, otherwise export all originalData
-        let dataToExport = displayedData.length > 0 ? displayedData : originalData;
-
-        if (dataToExport.length === 0) {
-            alert("No data available for export.");
-            return;
-        }
-
-        dataToExport.forEach(item => {
-            doc.text(item.student_id.toString(), 14, y);
-            doc.text(formatDate(item.date), 64, y);
-            doc.text(item.time_spent.toFixed(2), 114, y);
-            y += 7;
-        });
-
-        doc.save("student_login_report.pdf");
-    }
-
-    // Event listeners
-    document.getElementById("apply-filters").addEventListener("click", applyFilters);
-    document.getElementById("export-data").addEventListener("click", exportPDF);
-    loadMoreBtn.addEventListener("click", loadMoreData);
-
-    // Initial fetch
-    fetchData();
-
-    // Back to top button functionality
-    const backToTop = document.getElementById('back-to-top');
-    const scrollToBottom = document.getElementById("scroll-to-bottom");
-
-    window.addEventListener("scroll", () => {
-        backToTop.style.display = window.scrollY > 300 ? "block" : "none";
+    visibleData.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${item.TRNO}</td>
+            <td>${item.DATE}</td>
+            <td>${item.TIME}</td>
+            <td>${item.CLASS}</td>
+            <td>${item.FULLNAME}</td>
+            <td>${item.DARAJAH}</td>
+        `;
+        tbody.appendChild(row);
     });
 
-    backToTop.addEventListener("click", () => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
+    document.getElementById("load-more").style.display = 
+        filtered.length > visibleCount ? "block" : "none";
+}
 
-    // Scroll to bottom button functionality
-    scrollToBottom.addEventListener("click", () => {
-        window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+function applyFilters() {
+    const studentId = document.getElementById("student-id").value.trim();
+    const className = document.getElementById("student-class").value.trim().toLowerCase();
+    const startDate = document.getElementById("start-date").value;
+    const endDate = document.getElementById("end-date").value;
+    const minTime = document.getElementById("min-time").value;
+
+    return allData.filter(item => {
+        let match = true;
+        const itemDate = new Date(item.DATE);
+
+        if (studentId && item.TRNO !== studentId) match = false;
+        if (className && item.CLASS.toLowerCase() !== className) match = false;
+        if (startDate && new Date(startDate) > itemDate) match = false;
+        if (endDate && new Date(endDate) < itemDate) match = false;
+        if (minTime && parseFloat(item.TIME) < parseFloat(minTime)) match = false;
+
+        return match;
     });
+}
+
+document.getElementById("apply-filters").addEventListener("click", () => {
+    visibleCount = 20;
+    renderTable();
 });
+
+document.getElementById("load-more").addEventListener("click", () => {
+    visibleCount += 20;
+    renderTable();
+});
+
+document.getElementById("back-to-top").addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+document.getElementById("scroll-to-bottom").addEventListener("click", () => {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+});
+
+// CSV Download
+document.getElementById('download-csv').addEventListener('click', () => {
+    const studentId = document.getElementById('student-id').value;
+    const className = document.getElementById('student-class').value;
+    const startDate = document.getElementById('start-date').value;
+    const endDate = document.getElementById('end-date').value;
+    const minTime = document.getElementById('min-time').value;
+
+    const query = new URLSearchParams({
+        student_id: studentId,
+        class: className,
+        start_date: startDate,
+        end_date: endDate,
+        min_time: minTime
+    });
+
+    // Trigger file download
+    window.location.href = `/download-report?${query.toString()}`;
+});
+
+// PDF Download
+document.getElementById('download-pdf').addEventListener('click', async () => {
+    const filtered = applyFilters();
+
+    if (!filtered.length) {
+        alert("No data to export.");
+        return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF("landscape");
+
+    doc.setFontSize(18);
+    doc.text("Student Login Report", 40, 30);
+
+    const headers = [["TRNO", "DATE", "TIME", "CLASS", "FULLNAME", "DARAJAH"]];
+    const rows = filtered.map(item => [
+        item.TRNO,
+        item.DATE,
+        item.TIME,
+        item.CLASS,
+        item.FULLNAME,
+        item.DARAJAH
+    ]);
+
+    doc.autoTable({
+        head: headers,
+        body: rows,
+        startY: 50,
+        theme: "striped",
+        styles: { fontSize: 10 },
+        headStyles: { fillColor: [0, 102, 204] },
+        margin: { top: 60 }
+    });
+
+    doc.save("filtered_report.pdf");
+});
+
+
+// Initial Load
+fetchData();
