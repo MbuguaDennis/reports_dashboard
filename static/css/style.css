@@ -1,11 +1,20 @@
+/* import css files here  */
+@import './utility.css';
+
 /* Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+/* import font family from google font  */
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root{
+    --poppins-font_family:"Poppins", sans-serif;
+    --lato-font_family: "Lato", sans-serif;
+}
 body {
-    font-family: 'Inter', sans-serif;
-    background: linear-gradient(120deg, #007BFF, #00D4FF), url('/assets/background_image.jpg') no-repeat center center/cover;
+   font-family: var(--poppins-font_family);
+    background: linear-gradient(120deg, #171718, #141414);
     margin: 0;
     padding: 0;
-    text-align: center;
+    /* text-align: center; */
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
@@ -47,6 +56,45 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+
+
+/* upload button styling */
+/* CSV Upload Section */
+#csv-upload-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 0;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+#csv-upload-section label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+#csv-upload {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    max-width: 300px;
+    width: 100%;
+}
+
+#csv-upload:hover {
+    border-color: #007BFF;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.4);
+}
+
 
 
 /* BACK TO TOP FEATURE BUTTON */
@@ -175,4 +223,16 @@ table th {
     }
 }
 /* scroll to down button */
+
+
+
+/* Academic year styling */
+.academic-year{
+    background-color: #f1db4b;
+    color:#9EB25D;
+    padding: 0.5em 0;
+    width: 100%;
+}
+
+
 

@@ -1,0 +1,14 @@
+.reload-page-btn{
+    border: 0;
+    padding: 8px 16px;
+    display: block;
+    margin: 18px;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #F1DB4B;
+    transition: all 0.3s ease-in-out;
+
+}
+.reload-page-btn:hover{
+    background-color: #A7C6DA;
+}

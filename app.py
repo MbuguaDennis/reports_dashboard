@@ -2,24 +2,28 @@ from flask import Flask, jsonify, render_template, request, send_file
 import csv
 from io import StringIO, BytesIO
 import datetime
+
 app = Flask(__name__)
-def load_data():
-    with open("processed_logins.csv", newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        data = []
-        for row in reader:
-            try:
-                data.append({
-                    "TRNO": row["TRNO"],
-                    "DATE": row["DATE"],
-                    "TIME": float(row["TIME"]),
-                    "CLASS": row["CLASS"],
-                    "FULLNAME": row["FULLNAME"],
-                    "DARAJAH": row["DARAJAH"]
-                })
-            except ValueError:
-                continue  # skip rows with invalid numbers
-        return data
+
+# Store uploaded data temporarily
+uploaded_data = []
+
+def parse_csv(file):
+    global uploaded_data
+    uploaded_data.clear()  # Clear previous data
+    reader = csv.DictReader(file)
+    for row in reader:
+        try:
+            uploaded_data.append({
+                "TRNO": row["TRNO"],
+                "DATE": row["DATE"],
+                "TIME": float(row["TIME"]),
+                "CLASS": row["CLASS"],
+                "FULLNAME": row["FULLNAME"],
+                "DARAJAH": row["DARAJAH"]
+            })
+        except ValueError:
+            continue  # Skip invalid rows
 
 @app.route('/')
 def index():
@@ -27,7 +31,23 @@ def index():
 
 @app.route('/api/data')
 def api_data():
-    return jsonify(load_data())
+    return jsonify(uploaded_data)
+
+@app.route('/upload-csv', methods=['POST'])
+def upload_csv():
+    if 'csv_file' not in request.files:
+        return "No file part", 400
+    
+    file = request.files['csv_file']
+    
+    if file.filename == '':
+        return "No selected file", 400
+    
+    if file and file.filename.endswith('.csv'):
+        parse_csv(file)
+        return "CSV uploaded successfully", 200
+    else:
+        return "Invalid file type. Please upload a CSV file.", 400
 
 @app.route('/download-report')
 def download_report():
@@ -37,7 +57,7 @@ def download_report():
     min_time = request.args.get("min_time", "")
     class_name = request.args.get("class", "").strip().lower()
 
-    data = load_data()
+    data = uploaded_data
     filtered = []
 
     for item in data:

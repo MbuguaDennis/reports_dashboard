@@ -3,27 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login Dashboard</title>
-    <!-- Correcting the path to your CSS file -->
+    <title>Mamal Computer Lab Dashboard 2025</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <!-- FONT AWESOME CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7pQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <!-- jsPDF Library for PDF Export -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
-    <!-- jsPDF AutoTable Plugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
+
+<!-- Refresh Button -->
+<button class="reload-page-btn">Refresh Site
+    <span class="reload-page-icon">
+        <i class="fa fa-refresh" aria-hidden="false"></i>
+    </span>
+</button>
+
 <!-- PAGE HEADER -->
 <header class="dashboard-header">
     <h1>Mamal Computer Lab Dashboard</h1>
+    <h3 class="academic-year">Academic Year 2025</h3>
     <p>Monitor student logins, time usage, and generate reports efficiently.</p>
 </header>
+
 <section class="main">
     <div class="container">
-        <h1>📊 Student Login Dashboard</h1>
+        <h1>📊Student Screen Hours Report</h1>
         
+        <!-- CSV Upload Section -->
+        <input type="file" id="csv-upload" accept=".csv" />
+        <button id="upload-csv">Upload CSV</button>
+
         <!-- Filters -->
         <div id="filters">
             <input type="text" id="student-id" placeholder="🔍 Student ID">
@@ -46,7 +55,7 @@
                         <th>Time Spent (Minutes)</th>
                         <th>Class</th>
                         <th>Full Name</th>
-                        <th>Darajah</th>
+                        <th>TOTAL_SCREEN_HOURS</th>
                     </tr>
                 </thead>
                 <tbody id="student-data">
