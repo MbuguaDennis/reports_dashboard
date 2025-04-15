@@ -11,7 +11,7 @@
 }
 body {
    font-family: var(--poppins-font_family);
-    background: linear-gradient(120deg, #171718, #141414);
+   background: linear-gradient(to bottom right, #f9f9f9, #e0e0e0);
     margin: 0;
     padding: 0;
     /* text-align: center; */
@@ -225,14 +225,6 @@ table th {
 /* scroll to down button */
 
 
-
-/* Academic year styling */
-.academic-year{
-    background-color: #f1db4b;
-    color:#9EB25D;
-    padding: 0.5em 0;
-    width: 100%;
-}
 
 
 

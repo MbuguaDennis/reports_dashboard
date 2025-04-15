@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mamal Computer Lab Dashboard 2025</title>
@@ -21,7 +25,25 @@
 <!-- PAGE HEADER -->
 <header class="dashboard-header">
     <h1>Mamal Computer Lab Dashboard</h1>
-    <h3 class="academic-year">Academic Year 2025</h3>
+    <button id="read-instructions-btn">Read Instructions</button>
+<div id="instructions" style="display:none; text-align: left;" >
+    <h3>How to Use the Dashboard</h3>
+    <p id="date-filter-note" class="note">
+        <strong>Note:</strong> If you're filtering between two dates, keep in mind that the data starts from the next day. For example, if you want data from April 3rd, 2025, filter from April 2nd, 2025.
+    </p>
+    <ul>
+        <li><strong>Upload CSV File:</strong> Click "Upload CSV" to load your student data.</li>
+        <li><strong>Filter Data:</strong> Use the filters to narrow down the data.</li>
+        <li><strong>Apply Filters:</strong> Click "Apply Filters" to apply your selections.</li>
+        <li><strong>Load More Data:</strong> Click "Load More" to display additional records.</li>
+        <li><strong>Download Data:</strong> Export the data by clicking "Download CSV" or "Download PDF."</li>
+        <li><strong>Delete Data:</strong> Click "Delete Data" to clear the table.</li>
+        <li><strong>Refresh Page:</strong> Click "Refresh" to reload the page.</li>
+    </ul>
+    
+</div>
+
+    <h3 class="academic-year">Reports for 2025 Academic Year</h3>
     <p>Monitor student logins, time usage, and generate reports efficiently.</p>
 </header>
 
@@ -32,16 +54,18 @@
         <!-- CSV Upload Section -->
         <input type="file" id="csv-upload" accept=".csv" />
         <button id="upload-csv">Upload CSV</button>
+        <button id="delete-data">Delete Data</button>
+
 
         <!-- Filters -->
         <div id="filters">
-            <input type="text" id="student-id" placeholder="🔍 Student ID">
-            <input type="text" id="student-class" placeholder="🔍 Class">
+            <input type="text" id="student-id" placeholder="🔍 Filter TRNO eg. 26750">
+            <input type="text" id="student-class" placeholder="🔍 Filter Class eg. 3CF">
             <input type="date" id="start-date" min="2000-01-01">
             <input type="date" id="end-date" min="2000-01-01">
             <input type="number" id="min-time" placeholder="⏳ Min Time (Minutes)">
             <button id="apply-filters">Filter 🔍</button>
-            <button id="download-csv">Download CSV ⬇️</button>
+            <button id="download-csv" disabled>Download CSV ⬇️</button>
             <button id="download-pdf">Download PDF ⬇️</button>
         </div>
 
@@ -50,12 +74,12 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Student ID</th>
+                        <th>TRNO</th>
                         <th>Date</th>
-                        <th>Time Spent (Minutes)</th>
+                        <th>Time (mins) for Date</th>
                         <th>Class</th>
                         <th>Full Name</th>
-                        <th>TOTAL_SCREEN_HOURS</th>
+                        <th>Filtered_Period_Student_Total_Time (mins)</th>
                     </tr>
                 </thead>
                 <tbody id="student-data">

@@ -12,3 +12,114 @@
 .reload-page-btn:hover{
     background-color: #A7C6DA;
 }
+/* Style for the Read Instructions Button */
+#read-instructions-btn {
+    background-color: #4CAF50; /* Green color for the button */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding for a good button size */
+    font-size: 16px; /* Medium text size */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for background color */
+}
+
+#read-instructions-btn:hover {
+    background-color: #45a049; /* Darker green when hovering */
+}
+
+#read-instructions-btn:focus {
+    outline: none; /* Remove focus outline */
+    box-shadow: 0 0 5px rgba(0, 128, 0, 0.5); /* Slight shadow for focus */
+}
+
+/* Style for the Instructions section */
+#instructions {
+    margin-top: 20px; /* Space above the instructions */
+    padding: 20px; /* Padding for the instructions box */
+    background-color: #f9f9f9; /* Light gray background */
+    border-radius: 5px; /* Rounded corners for the instructions box */
+    border: 1px solid #ddd; /* Light border for distinction */
+    display: none; /* Initially hidden */
+}
+
+#instructions h3 {
+    font-size: 18px; /* Larger font for the heading */
+    color: #333; /* Dark text for the heading */
+}
+
+#instructions ul {
+    font-size: 14px; /* Smaller font for list items */
+    line-height: 1.6; /* Space between lines */
+    color: #555; /* Darker gray for list items */
+}
+
+#instructions ul li {
+    margin-bottom: 10px; /* Space between list items */
+}
+
+#instructions ul li strong {
+    color: #000; /* Bold color for important parts of the text */
+}
+
+/* Style for the Note Paragraph */
+#date-filter-note {
+    background-color: #f9f9f9; /* Light background for the note */
+    border-left: 5px solid #4CAF50; /* Green left border to emphasize the note */
+    padding: 15px 20px; /* Padding for a comfortable read */
+    font-size: 14px; /* Slightly smaller font size */
+    color: red; /* Dark text color for readability */
+    border-radius: 5px; /* Rounded corners */
+    margin-top: 20px; /* Space from the top */
+    line-height: 1.5; /* Better readability with more line spacing */
+}
+
+#date-filter-note strong {
+    color: #4CAF50; /* Green color for the strong text */
+}
+
+
+.academic-year{
+    color: white;
+    font-size: 24px;
+    /* background-color: black; */
+}
+#delete-data {
+    background-color: #f44336; /* Red for delete action */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    padding: 10px 16px; /* Comfortable padding */
+    font-size: 14px;
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #delete-data:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+  }
+  
+  #delete-data:active {
+    background-color: #b71c1c; /* Even darker red on click */
+  }
+
+  #upload-csv {
+    background-color: #4caf50; /* Green for positive action */
+    color: #fff; /* White text */
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  #upload-csv:hover {
+    background-color: #388e3c; /* Slightly darker green on hover */
+  }
+  
+  #upload-csv:active {
+    background-color: #2e7d32; /* Even darker green when clicked */
+  }
+  
+  

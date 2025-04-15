@@ -1,4 +1,17 @@
-let allData = [];
+// Open instructions code
+document.getElementById('read-instructions-btn').addEventListener('click', () => {
+    const instructions = document.getElementById('instructions');
+    if (instructions.style.display === "none") {
+        instructions.style.display = "block";
+    } else {
+        instructions.style.display = "none";
+    }
+});
+
+
+
+
+let allData = JSON.parse(localStorage.getItem("studentData")) || [];
 let visibleCount = 20;
 
 // Handle CSV Upload
@@ -14,7 +27,8 @@ document.getElementById("upload-csv").addEventListener("click", () => {
     reader.onload = function(e) {
         const csvData = e.target.result;
         const parsedData = parseCSV(csvData);
-        allData = parsedData;
+        allData = parsedData; // Replace the current data with the uploaded one
+        localStorage.setItem("studentData", JSON.stringify(allData)); // Save to localStorage
         renderTable(); // Automatically render the table after loading data
     };
 
@@ -55,10 +69,14 @@ function applyFilters() {
         const itemClass = item.CLASS.toLowerCase().replace(/\s+/g, '');
         const itemDate = new Date(item.DATE);
 
+        if (startDate && itemDate.getTime() < new Date(startDate).getTime()) {
+            match = false;
+        }
+        if (endDate && itemDate.getTime() > new Date(endDate).getTime()) {
+            match = false;
+        }
         if (studentId && item.TRNO !== studentId) match = false;
         if (className && !itemClass.includes(className)) match = false;
-        if (startDate && new Date(startDate) > itemDate) match = false;
-        if (endDate && new Date(endDate) < itemDate) match = false;
         if (minTime && parseFloat(item.TIME) < parseFloat(minTime)) match = false;
 
         return match;
@@ -69,37 +87,45 @@ function applyFilters() {
 function renderTable() {
     const tbody = document.getElementById("student-data");
     tbody.innerHTML = "";
-    const filtered = applyFilters();
+
+    const filtered = applyFilters(); // Apply any filters selected
 
     if (filtered.length === 0) {
         tbody.innerHTML = "<tr><td colspan='6'>No data found</td></tr>";
         return;
     }
 
-    // Calculate total time per student
+    // Step 1: Create a map of total screen time per student (TRNO)
     const userTimeMap = {};
     filtered.forEach(item => {
         const id = item.TRNO;
-        const t = parseFloat(item.TIME);
+        const time = parseFloat(item.TIME);
+
+        // Initialize or add to the total time for each student (TRNO)
         if (!userTimeMap[id]) userTimeMap[id] = 0;
-        userTimeMap[id] += isNaN(t) ? 0 : t / 60;
+        userTimeMap[id] += isNaN(time) ? 0 : time;
     });
 
-    const visibleData = filtered.slice(0, visibleCount);
+    // Step 2: Render the filtered data with the total screen time
+    const visibleData = filtered.slice(0, visibleCount); // Limit visible data to `visibleCount`
 
     visibleData.forEach(item => {
         const row = document.createElement("tr");
+        
+        const totalTime = userTimeMap[item.TRNO]?.toFixed(0) || "0"; // Get total time for student
+        
         row.innerHTML = `
             <td>${item.TRNO}</td>
             <td>${item.DATE}</td>
             <td>${item.TIME}</td>
             <td>${item.CLASS}</td>
             <td>${item.FULLNAME}</td>
-            <td>${userTimeMap[item.TRNO]?.toFixed(2) || "0.00"}</td>
+            <td>${totalTime}</td> <!-- Display total time for the student -->
         `;
         tbody.appendChild(row);
     });
 
+    // Step 3: Toggle "Load More" button visibility
     document.getElementById("load-more").style.display =
         filtered.length > visibleCount ? "block" : "none";
 }
@@ -195,11 +221,11 @@ document.getElementById('download-pdf').addEventListener('click', async () => {
 
         const totalTime = filtered.reduce((sum, item) => {
             const t = parseFloat(item.TIME);
-            return sum + (isNaN(t) ? 0 : t / 60);
+            return sum + (isNaN(t) ? 0 : t);
         }, 0);
 
         doc.setFontSize(12);
-        doc.text(`Total Time for TRNO ${studentId}: ${totalTime.toFixed(2)} hours`, 40, 40);
+        doc.text(`Total Time for TRNO ${studentId}: ${totalTime.toFixed(0)} minutes`, 40, 40);
 
         doc.autoTable({
             head: headers,
@@ -216,17 +242,17 @@ document.getElementById('download-pdf').addEventListener('click', async () => {
             const id = item.TRNO;
             const t = parseFloat(item.TIME);
             if (!userTimeMap[id]) userTimeMap[id] = 0;
-            userTimeMap[id] += isNaN(t) ? 0 : t / 60;
+            userTimeMap[id] += isNaN(t) ? 0 : t;
         });
 
-        headers = [["TRNO", "DATE", "TIME", "CLASS", "FULLNAME", "TOTAL_SCREEN_HOURS"]];
+        headers = [["TRNO", "DATE", "DAILY_SCREEN_TIME(MINS)", "CLASS", "FULLNAME", "TOTAL_SCREEN_TIME(FILTERED-PERIOD)MINS"]];
         rows = filtered.map(item => [
             item.TRNO,
             item.DATE,
             item.TIME,
             item.CLASS,
             item.FULLNAME,
-            userTimeMap[item.TRNO]?.toFixed(2) || "0.00"
+            userTimeMap[item.TRNO]?.toFixed(0) || "0"
         ]);
 
         doc.autoTable({
@@ -242,3 +268,11 @@ document.getElementById('download-pdf').addEventListener('click', async () => {
 
     doc.save(`student_report_${new Date().toISOString()}.pdf`);
 });
+
+// Clear Data (Delete CSV Data)
+document.getElementById("delete-data").addEventListener("click", () => {
+    allData = [];  // Clear the current data
+    localStorage.removeItem("studentData"); // Clear from localStorage
+    renderTable(); // Reload the table (empty)
+});
+
