@@ -16,11 +16,12 @@
 <body>
 
 <!-- Refresh Button -->
-<button class="reload-page-btn">Refresh Site
+<button class="reload-page-btn">
+    Refresh Site
     <span class="reload-page-icon">
-        <i class="fa fa-refresh" aria-hidden="false"></i>
+        <i class="fa fa-refresh" aria-hidden="true"></i>
     </span>
-</button>
+  </button>
 
 <!-- PAGE HEADER -->
 <header class="dashboard-header">
@@ -28,9 +29,7 @@
     <button id="read-instructions-btn">Read Instructions</button>
 <div id="instructions" style="display:none; text-align: left;" >
     <h3>How to Use the Dashboard</h3>
-    <p id="date-filter-note" class="note">
-        <strong>Note:</strong> If you're filtering between two dates, keep in mind that the data starts from the next day. For example, if you want data from April 3rd, 2025, filter from April 2nd, 2025.
-    </p>
+    <!-- point to note -->
     <ul>
         <li><strong>Upload CSV File:</strong> Click "Upload CSV" to load your student data.</li>
         <li><strong>Filter Data:</strong> Use the filters to narrow down the data.</li>
@@ -40,6 +39,9 @@
         <li><strong>Delete Data:</strong> Click "Delete Data" to clear the table.</li>
         <li><strong>Refresh Page:</strong> Click "Refresh" to reload the page.</li>
     </ul>
+    <p id="date-filter-note" class="note">
+        <strong>Note:</strong> If you're filtering between two dates, keep in mind that the data starts from the next day. For example, if you want data from April 3rd, 2025, filter from April 2nd, 2025.
+    </p>
     
 </div>
 
@@ -53,8 +55,8 @@
         
         <!-- CSV Upload Section -->
         <input type="file" id="csv-upload" accept=".csv" />
-        <button id="upload-csv">Upload CSV</button>
-        <button id="delete-data">Delete Data</button>
+        <button id="upload-csv">UPLOAD CSV FILE</button>
+        <button id="delete-data">CLEAR DATA</button>
 
 
         <!-- Filters -->

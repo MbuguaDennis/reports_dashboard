@@ -1,17 +1,47 @@
-.reload-page-btn{
-    border: 0;
-    padding: 8px 16px;
+.reload-page-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 900;
+    border-radius: 6px;
     display: block;
-    margin: 18px;
-    font-size: 1.25rem;
+    margin: 20px;
+    position: fixed;
+    z-index: 999;
     cursor: pointer;
-    color: #F1DB4B;
-    transition: all 0.3s ease-in-out;
+    transition: background-color 0.3s, transform 0.2s;
+    animation: animate-button 1.5s infinite ease-in-out;
 
-}
-.reload-page-btn:hover{
-    background-color: #A7C6DA;
-}
+  }
+  
+  @keyframes animate-button {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+      background-color: rgb(235, 182, 8);
+    }
+  }
+  
+  
+  /* Optional: Add a spin effect on hover */
+  .reload-page-btn:hover .reload-page-icon i {
+    transform: rotate(360deg);
+  }
+
+
+
+
+
 /* Style for the Read Instructions Button */
 #read-instructions-btn {
     background-color: #4CAF50; /* Green color for the button */
@@ -67,7 +97,7 @@
     background-color: #f9f9f9; /* Light background for the note */
     border-left: 5px solid #4CAF50; /* Green left border to emphasize the note */
     padding: 15px 20px; /* Padding for a comfortable read */
-    font-size: 14px; /* Slightly smaller font size */
+    font-size: 24px; /* Slightly smaller font size */
     color: red; /* Dark text color for readability */
     border-radius: 5px; /* Rounded corners */
     margin-top: 20px; /* Space from the top */
