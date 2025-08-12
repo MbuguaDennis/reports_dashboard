@@ -8,9 +8,6 @@ document.getElementById('read-instructions-btn').addEventListener('click', () =>
     }
 });
 
-
-
-
 let allData = JSON.parse(localStorage.getItem("studentData")) || [];
 let visibleCount = 20;
 
@@ -27,9 +24,9 @@ document.getElementById("upload-csv").addEventListener("click", () => {
     reader.onload = function(e) {
         const csvData = e.target.result;
         const parsedData = parseCSV(csvData);
-        allData = parsedData; // Replace the current data with the uploaded one
-        localStorage.setItem("studentData", JSON.stringify(allData)); // Save to localStorage
-        renderTable(); // Automatically render the table after loading data
+        allData = parsedData; 
+        localStorage.setItem("studentData", JSON.stringify(allData)); 
+        renderTable(); 
     };
 
     reader.readAsText(file);
@@ -38,13 +35,13 @@ document.getElementById("upload-csv").addEventListener("click", () => {
 // Parse CSV data
 function parseCSV(csv) {
     const rows = csv.split("\n").map(row => row.split(","));
-    const headers = rows[0]; // First row is the header
-    const data = rows.slice(1); // Rest are the data rows
+    const headers = rows[0]; 
+    const data = rows.slice(1); 
 
     return data.map(row => {
         const item = {};
         headers.forEach((header, index) => {
-            item[header.trim()] = row[index]?.trim() || ""; // Assigning values based on header names
+            item[header.trim()] = row[index]?.trim() || "";
         });
         return item;
     });
@@ -88,31 +85,26 @@ function renderTable() {
     const tbody = document.getElementById("student-data");
     tbody.innerHTML = "";
 
-    const filtered = applyFilters(); // Apply any filters selected
+    const filtered = applyFilters(); 
 
     if (filtered.length === 0) {
         tbody.innerHTML = "<tr><td colspan='6'>No data found</td></tr>";
         return;
     }
 
-    // Step 1: Create a map of total screen time per student (TRNO)
     const userTimeMap = {};
     filtered.forEach(item => {
         const id = item.TRNO;
         const time = parseFloat(item.TIME);
-
-        // Initialize or add to the total time for each student (TRNO)
         if (!userTimeMap[id]) userTimeMap[id] = 0;
         userTimeMap[id] += isNaN(time) ? 0 : time;
     });
 
-    // Step 2: Render the filtered data with the total screen time
-    const visibleData = filtered.slice(0, visibleCount); // Limit visible data to `visibleCount`
+    const visibleData = filtered.slice(0, visibleCount);
 
     visibleData.forEach(item => {
         const row = document.createElement("tr");
-        
-        const totalTime = userTimeMap[item.TRNO]?.toFixed(0) || "0"; // Get total time for student
+        const totalTime = userTimeMap[item.TRNO]?.toFixed(0) || "0";
         
         row.innerHTML = `
             <td>${item.TRNO}</td>
@@ -120,12 +112,11 @@ function renderTable() {
             <td>${item.TIME}</td>
             <td>${item.CLASS}</td>
             <td>${item.FULLNAME}</td>
-            <td>${totalTime}</td> <!-- Display total time for the student -->
+            <td>${totalTime}</td>
         `;
         tbody.appendChild(row);
     });
 
-    // Step 3: Toggle "Load More" button visibility
     document.getElementById("load-more").style.display =
         filtered.length > visibleCount ? "block" : "none";
 }
@@ -156,23 +147,49 @@ document.getElementById("scroll-to-bottom").addEventListener("click", () => {
     window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
 });
 
-// CSV Download
+// CSV Download (Client-Side, matches PDF filters)
 document.getElementById('download-csv').addEventListener('click', () => {
-    const studentId = document.getElementById('student-id').value;
-    const className = document.getElementById('student-class').value;
-    const startDate = document.getElementById('start-date').value;
-    const endDate = document.getElementById('end-date').value;
-    const minTime = document.getElementById('min-time').value;
+    const filtered = applyFilters();
 
-    const query = new URLSearchParams({
-        student_id: studentId,
-        class: className,
-        start_date: startDate,
-        end_date: endDate,
-        min_time: minTime
+    if (!filtered.length) {
+        alert("No data to export.");
+        return;
+    }
+
+    const userTimeMap = {};
+    filtered.forEach(item => {
+        const id = item.TRNO;
+        const t = parseFloat(item.TIME);
+        if (!userTimeMap[id]) userTimeMap[id] = 0;
+        userTimeMap[id] += isNaN(t) ? 0 : t;
     });
 
-    window.location.href = `/download-report?${query.toString()}`;
+    const headers = ["TRNO", "DATE", "DAILY_SCREEN_TIME(MINS)", "CLASS", "FULLNAME", "TOTAL_SCREEN_TIME(FILTERED-PERIOD)MINS"];
+    const csvRows = [];
+    csvRows.push(headers.join(','));
+
+    filtered.forEach(item => {
+        csvRows.push([
+            `"${item.TRNO}"`,
+            `"${item.DATE}"`,
+            `"${item.TIME}"`,
+            `"${item.CLASS}"`,
+            `"${item.FULLNAME}"`,
+            `"${userTimeMap[item.TRNO]?.toFixed(0) || "0"}"`
+        ].join(','));
+    });
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.href = url;
+    a.download = `student_report_${new Date().toISOString()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 });
 
 // PDF Download
@@ -269,10 +286,9 @@ document.getElementById('download-pdf').addEventListener('click', async () => {
     doc.save(`student_report_${new Date().toISOString()}.pdf`);
 });
 
-// Clear Data (Delete CSV Data)
+// Clear Data
 document.getElementById("delete-data").addEventListener("click", () => {
-    allData = [];  // Clear the current data
-    localStorage.removeItem("studentData"); // Clear from localStorage
-    renderTable(); // Reload the table (empty)
+    allData = [];  
+    localStorage.removeItem("studentData");
+    renderTable(); 
 });
-
